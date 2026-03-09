@@ -1,0 +1,17 @@
+# Skompilowane pliki i katalogi lokalne Terraforma
+**/.terraform/*
+
+# Pliki stanu
+*.tfstate
+*.tfstate.*
+
+# Pliki z logami awarii
+crash.log
+crash.*.log
+
+# Pliki ze zmiennymi
+*.tfvars
+*.tfvars.json
+
+# Pliki planu Terraforma
+*tfplan*

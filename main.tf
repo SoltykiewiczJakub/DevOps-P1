@@ -28,6 +28,7 @@ resource "google_compute_firewall" "allow_http" {
 }
 
 # 4. Maszyna Wirtualna z Debian 12
+/*
 resource "google_compute_instance" "debian_vm" {
   name         = "devops-debian-vm"
   machine_type = "e2-micro"
@@ -79,3 +80,4 @@ resource "google_compute_instance" "debian_vm" {
 output "adres_ip_maszyny" {
   value = google_compute_instance.debian_vm.network_interface.0.access_config.0.nat_ip
 }
+*/
