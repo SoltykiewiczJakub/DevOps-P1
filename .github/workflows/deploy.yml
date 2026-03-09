@@ -1,0 +1,28 @@
+name: Zbuduj i Wypchnij do GCP
+
+on:
+  push:
+    branches: [ "main" ] # Uruchom tylko po wrzuceniu zmian na główną gałąź
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Pobranie kodu repozytorium
+      uses: actions/checkout@v3
+
+    - name: 🔐 Logowanie do Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 🐳 Konfiguracja Dockera
+      run: gcloud auth configure-docker europe-central2-docker.pkg.dev --quiet
+
+    - name: 🏗️ Zbudowanie i wypchnięcie obrazu
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      run: |
+        IMAGE_NAME=europe-central2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/moja-aplikacja:latest
+        docker build -t $IMAGE_NAME .
+        docker push $IMAGE_NAME
