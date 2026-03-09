@@ -2,7 +2,7 @@
 provider "google" {
   project = "project-900a854b-5db3-4235-aa5"
   region  = "europe-central2"
-  zone    = "europe-central2-a"
+  zone    = "europe-west4-a"
 }
 
 # 2. Tworzenie repozytorium w Artifact Registry
