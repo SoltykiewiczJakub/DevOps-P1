@@ -71,11 +71,21 @@ resource "google_compute_instance" "debian_vm" {
     gcloud auth configure-docker europe-central2-docker.pkg.dev --quiet
     
     # Uruchomienie kontenera z najnowszą wersją aplikacji
-    docker run -d -p 80:80 europe-central2-docker.pkg.dev/[TWÓJ_ID_PROJEKTU_GCP]/my-docker-repo/moja-aplikacja:latest
+    docker run -d -p 80:80 europe-central2-docker.pkg.dev/project-900a854b-5db3-4235-aa5/my-docker-repo/moja-aplikacja:latest
   EOT
 }
 
 # Zwrócenie publicznego IP po zakończeniu tworzenia
 output "adres_ip_maszyny" {
   value = google_compute_instance.debian_vm.network_interface.0.access_config.0.nat_ip
+}
+
+# Pobieramy informacje o domyślnym koncie Compute Engine
+data "google_compute_default_service_account" "default" {}
+
+# Nadajemy mu rolę "Czytelnika" dla Artifact Registry, żeby maszyna mogła pobierać obrazy
+resource "google_project_iam_member" "artifact_registry_reader" {
+  project = "project-900a854b-5db3-4235-aa5"
+  role    = "roles/artifactregistry.reader"
+  member  = "serviceAccount:${data.google_compute_default_service_account.default.email}"
 }
